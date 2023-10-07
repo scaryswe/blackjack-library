@@ -1,15 +1,11 @@
-// main.ts
-
-// Import necessary dependencies
 import * as readline from 'readline';
-import DeckOfCardsAPI from './deckofcardsAPI'; // Import your custom module for managing decks
-import { initializeGame, startGameLoop, dealCard, calculateScore } from './blackjack'; // Import game logic functions
+import DeckOfCardsAPI from './deckofcardsAPI'; 
+import { initializeGame, startGameLoop, calculateScore, dealCard } from './blackjack';
 
-// Other imports, such as player or dealer modules, if applicable
 
 // Define getPlayerChoice function
 async function getPlayerChoice(): Promise<string> {
-  // Create a readline interface for getting player input
+
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -25,13 +21,11 @@ async function getPlayerChoice(): Promise<string> {
 }
 
 // Define updateGameState function
-async function updateGameState(playerChoice: string): Promise<void> {
-  // Implement your logic to update the game state based on the player's choice
-  // You can add the logic for the dealer's turn here as well
-  
+function updateGameState(playerChoice: string): void {
+
   if (playerChoice === 'hit') {
-    await dealCard(gameData.playerHand, deckApi, gameData);
-    gameData.playerScore = calculateScore(gameData.playerHand);
+    dealCard(gameData.playerHand, deckApi, gameData); // Pass the required arguments
+    gameData.playerScore = calculateScore(gameData.playerHand); // Calculate the player's score
   } else if (playerChoice === 'stand') {
     // Dealer's turn logic goes here
   }
@@ -74,7 +68,7 @@ const gameLoop = async () => {
       }
     }
   } catch (error) {
-    console.error(`An error occurred: ${error.message}`);
+    console.error(`An error occurred: ${(error as Error).message}`);
   }
 };
 

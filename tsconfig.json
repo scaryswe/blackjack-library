@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+      "target": "ES2022", // Change this to ES2022 or a higher version
+      "module": "ESNext", // Change this to ESNext or another compatible module format
+      "moduleResolution": "Node",
+      "outDir": "./dist",
+      "rootDir": "./",
+      "baseUrl": "./",
+      "paths": {
+        "node-fetch": ["./node_modules/node-fetch"]
+      }
+      // Other compiler options...
+    },
+    "include": [
+      "./*.ts"  // Include TypeScript files in the current directory
+    ],
+    "exclude": [
+      "node_modules"
+    ]
+  }
+  

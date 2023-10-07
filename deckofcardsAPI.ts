@@ -1,7 +1,6 @@
 // Import the required modules
 import fetch from 'node-fetch';
 
-// Define interfaces for API responses
 interface DeckResponse {
   deck_id: string;
   remaining: number;
@@ -27,12 +26,11 @@ interface ShuffleDeckResponse {
   deck_id: string;
 }
 
-// Define your DeckOfCardsAPI class
 class DeckOfCardsAPI {
   private apiUrl: string;
 
   constructor() {
-    this.apiUrl = 'https://www.deckofcardsapi.com/api/deck';
+    this.apiUrl = 'https://www.deckofcardsapi.com/api/deck/new/';
   }
 
   async createNewDeck(): Promise<DeckResponse> {
@@ -41,10 +39,10 @@ class DeckOfCardsAPI {
       if (!response.ok) {
         throw new Error('Failed to create a new deck.');
       }
-      const data = (await response.json()) as DeckResponse; // Explicitly cast to DeckResponse
+      const data = (await response.json()) as DeckResponse; 
       return data;
     } catch (error) {
-      throw new Error(`Failed to create a new deck: ${error.message}`);
+        throw new Error(`Failed to create a new deck: ${(error as Error).message}`);
     }
   }
   
@@ -54,7 +52,7 @@ class DeckOfCardsAPI {
     if (!response.ok) {
       throw new Error('Failed to draw cards.');
     }
-    const data = (await response.json()) as DrawCardResponse; // Explicitly cast to DrawCardResponse
+    const data = (await response.json()) as DrawCardResponse;
     return data.cards;
   }
 
@@ -64,14 +62,14 @@ class DeckOfCardsAPI {
       if (!response.ok) {
         throw new Error('Failed to shuffle the deck.');
       }
-      const data = (await response.json()) as ShuffleDeckResponse; // Cast to ShuffleDeckResponse
+      const data = (await response.json()) as ShuffleDeckResponse; 
       if (!data.success) {
         throw new Error('Failed to shuffle the deck.');
       }
     } catch (error) {
-      throw new Error(`Failed to shuffle the deck: ${error.message}`);
+        throw new Error(`Failed to shuffle the deck: ${(error as Error).message}`);
     }
   }
 }
 
-export default DeckOfCardsAPI; // Place this line outside of the class definition
+export default DeckOfCardsAPI; 

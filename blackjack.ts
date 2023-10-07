@@ -1,7 +1,5 @@
-// blackjack.ts
-
 // Import necessary dependencies
-import DeckOfCardsAPI from './deckofcardsAPI'; // Import your card deck management module
+import DeckOfCardsAPI from './deckofcardsAPI'; 
 
 // Define constants for card values
 const CARD_VALUES: { [key: string]: number } = {
@@ -15,8 +13,8 @@ interface GameState {
   playerScore: number;
   dealerScore: number;
   gameOver: boolean;
-  deckId: string; // Add the deckId property
-  cardsRemaining: number; // Add the cardsRemaining property
+  deckId: string; 
+  cardsRemaining: number; 
 }
 
 // Function to initialize the game state
@@ -53,7 +51,6 @@ export function calculateScore(hand: string[]): number {
     }
   }
 
-  // Adjust for Aces if necessary to avoid busting
   while (numAces > 0 && score > 21) {
     score -= 10;
     numAces--;
@@ -75,10 +72,7 @@ export async function dealCard(hand: string[], deckApi: DeckOfCardsAPI, gameStat
 
 // Function to start the game loop
 export function startGameLoop(gameState: GameState) {
-  // Implement your game loop logic here
-  // You can use the gameState parameter to access and update the game state
 
-  // Example game loop logic:
   while (!gameState.gameOver) {
     // Display game state and prompt for player's action
     console.log('Player Hand:', gameState.playerHand.join(', '));
@@ -96,18 +90,8 @@ export function startGameLoop(gameState: GameState) {
       gameState.gameOver = true;
       break;
     }
-
-    // Prompt player for action (you can use readline or inquirer here)
-    // Update gameState based on the player's choice
-
-    // Perform dealer's turn logic
-
-    // Determine the winner
-
-    // Update gameState as needed
   }
 
   console.log('Game over.');
 }
 
-// ... (other functions and game logic)
