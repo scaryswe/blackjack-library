@@ -1,11 +1,12 @@
-// Import fetch for interacting with the API
+// Import the required modules
 import fetch from 'node-fetch';
 
-// Defined interfaces for API responses
+// Define interfaces for API responses
 interface DeckResponse {
   deck_id: string;
-  shuffled: boolean;
   remaining: number;
+  success: boolean;
+  shuffled: boolean;
 }
 
 interface DrawCardResponse {
@@ -19,7 +20,14 @@ interface Card {
   image: string;
 }
 
-// Defined API class
+interface ShuffleDeckResponse {
+  success: boolean;
+  shuffled: boolean;
+  remaining: number;
+  deck_id: string;
+}
+
+// Define your DeckOfCardsAPI class
 class DeckOfCardsAPI {
   private apiUrl: string;
 
@@ -27,36 +35,37 @@ class DeckOfCardsAPI {
     this.apiUrl = 'https://www.deckofcardsapi.com/api/deck';
   }
 
-  async createNewDeck(): Promise<string> {
+  async createNewDeck(): Promise<DeckResponse> {
     try {
       const response = await fetch(`${this.apiUrl}/new/shuffle/?deck_count=1`);
       if (!response.ok) {
         throw new Error('Failed to create a new deck.');
       }
-      const data = await response.json() as DeckResponse; // Specify the expected type
-      return data.deck_id;
+      const data = (await response.json()) as DeckResponse; // Explicitly cast to DeckResponse
+      return data;
     } catch (error) {
       throw new Error(`Failed to create a new deck: ${error.message}`);
     }
   }
   
+
   async drawCards(deckId: string, numCards: number): Promise<Card[]> {
-    try {
-      const response = await fetch(`${this.apiUrl}/${deckId}/draw/?count=${numCards}`);
-      if (!response.ok) {
-        throw new Error('Failed to draw cards.');
-      }
-      const data = await response.json() as DrawCardResponse; // Specify the expected type
-      return data.cards;
-    } catch (error) {
-      throw new Error(`Failed to draw cards: ${error.message}`);
+    const response = await fetch(`${this.apiUrl}/${deckId}/draw/?count=${numCards}`);
+    if (!response.ok) {
+      throw new Error('Failed to draw cards.');
     }
-  }  
+    const data = (await response.json()) as DrawCardResponse; // Explicitly cast to DrawCardResponse
+    return data.cards;
+  }
 
   async shuffleDeck(deckId: string): Promise<void> {
     try {
       const response = await fetch(`${this.apiUrl}/${deckId}/shuffle/`);
       if (!response.ok) {
+        throw new Error('Failed to shuffle the deck.');
+      }
+      const data = (await response.json()) as ShuffleDeckResponse; // Cast to ShuffleDeckResponse
+      if (!data.success) {
         throw new Error('Failed to shuffle the deck.');
       }
     } catch (error) {
@@ -65,4 +74,4 @@ class DeckOfCardsAPI {
   }
 }
 
-export default DeckOfCardsAPI;
+export default DeckOfCardsAPI; // Place this line outside of the class definition
